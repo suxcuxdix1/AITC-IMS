@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "Equipment": {
+      "title": "Equipment",
+      "description": "Military-grade hardware inventory item",
+      "type": "object",
+      "properties": {
+        "sku": { "type": "string", "description": "Unique identifier for the item" },
+        "name": { "type": "string", "description": "Name of the hardware" },
+        "armorClass": { "type": "string", "description": "Classification of the armor level" },
+        "stockLevel": { "type": "integer", "description": "Current number in stock" },
+        "unitPrice": { "type": "number", "description": "Price per unit" },
+        "reorderPoint": { "type": "integer", "description": "Threshold for low stock alerts" },
+        "category": { "type": "string", "enum": ["Ballistic Vest", "Vehicle Plating", "Tactical Helmet", "Shield", "Other"] },
+        "supplierId": { "type": "string", "description": "ID of the supplier" },
+        "warehouseId": { "type": "string", "description": "ID of the warehouse" }
+      },
+      "required": ["sku", "name", "stockLevel", "category"]
+    },
+    "Warehouse": {
+      "title": "Warehouse",
+      "description": "Storage location for military hardware",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "location": { "type": "string" },
+        "capacity": { "type": "integer" }
+      },
+      "required": ["name", "location"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Inventory movement record (Audit Log)",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["IN", "OUT"] },
+        "quantity": { "type": "integer" },
+        "equipmentId": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      },
+      "required": ["type", "quantity", "equipmentId", "userId", "timestamp"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Hardware vendor information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "contact": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "address": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Extended user information with roles",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["Admin", "Logistics"] },
+        "name": { "type": "string" }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "equipment": {
+      "schema": "Equipment",
+      "description": "Main inventory collection"
+    },
+    "warehouses": {
+      "schema": "Warehouse",
+      "description": "Storage locations"
+    },
+    "transactions": {
+      "schema": "Transaction",
+      "description": "Audit log of all movements"
+    },
+    "suppliers": {
+      "schema": "Supplier",
+      "description": "Vendor contacts"
+    },
+    "users": {
+      "schema": "UserProfile",
+      "description": "User roles and metadata"
+    }
+  }
+}
